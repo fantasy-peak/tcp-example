@@ -13,6 +13,19 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(Boost)
 
+
+FetchContent_Declare(
+        spdlog
+        GIT_REPOSITORY https://github.com/gabime/spdlog.git
+        GIT_TAG        v1.x
+)
+
+FetchContent_GetProperties(spdlog)
+if (NOT spdlog_POPULATED)
+    FetchContent_Populate(spdlog)
+    add_subdirectory(${spdlog_SOURCE_DIR} ${spdlog_BINARY_DIR})
+endif ()
+
 # Build
 set(CMAKE_CXX_STANDARD 23)
 add_compile_options(
@@ -27,4 +40,4 @@ add_compile_options(
 
 add_executable(tcp-server src/server.cpp)
 target_include_directories(tcp-server BEFORE PUBLIC ${CMAKE_SOURCE_DIR}/include)
-target_link_libraries(tcp-server PUBLIC Boost::asio)
+target_link_libraries(tcp-server PUBLIC Boost::asio spdlog::spdlog)
